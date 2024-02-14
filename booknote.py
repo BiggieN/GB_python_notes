@@ -31,7 +31,13 @@ def note_zero_function():
 
 
     def add_note(notes):
-        id = input("Введите ID заметки: ")
+        while True:
+            try:
+                id = int(input("Введите ID заметки (целое число): "))
+            except ValueError:
+                print('Введите целое число')
+            else:
+                break
         title = input("Введите заголовок заметки: ")
         body = input("Введите содержание: ")
         created_at = datetime.datetime.now().strftime("%d-%m-%Y")
