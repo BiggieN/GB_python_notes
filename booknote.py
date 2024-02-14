@@ -69,7 +69,7 @@ def note_zero_function():
     
 
     def save_notes_to_file(notes):
-        with open("notes_hw/note_files/notes.json", "w") as file:
+        with open("./note_files/notes.json", "w") as file:
             json.dump(notes, file)    
     
 
