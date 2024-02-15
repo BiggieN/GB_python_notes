@@ -48,12 +48,15 @@ def note_zero_function():
 
 
     def edit_note(notes):
-        id = input("Введите ID заметки для редактирования: ")
-        for note in notes:
-            if note['id'] == " " or note['id'] != id:
-                error_print()
+        while True:
+            try:
+                id = int(input("Введите ID заметки для редактирования: "))
+            except ValueError:
+                print('Введите целое число')
+            else:
                 break
-            elif note['id'] == id:
+        for note in notes:
+            if note['id'] == id:
                 title = input("Введите новый заголовок заметки: ")
                 body = input("Введите новое содержание заметки: ")
                 note['title'] = title
@@ -82,6 +85,8 @@ def note_zero_function():
     load_notes_from_file()
     notes = load_notes_from_file()
 
+    print(notes)
+
     while True:
         display_menu()
         option = input("Выберите опцию: ")
@@ -99,12 +104,14 @@ def note_zero_function():
                     display_note(note)                      
         elif option == "4":
             add_note(notes)
+            save_notes_to_file(notes)
         elif option == "5":
             edit_note(notes)
+            save_notes_to_file(notes)
         elif option == "6":
             delete_note(notes)
-        elif option == "7":
             save_notes_to_file(notes)
+        elif option == "7":
             break    
         else:
             error_print()
