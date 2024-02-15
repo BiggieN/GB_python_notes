@@ -12,9 +12,14 @@ end = "\033[0;0m"
 def error_print():
     print(start + "\"неверный выбор\"" + end)
 
+def note_zero_function(): 
 
-
-def note_zero_function():    
+    def checkid(notes, id):
+        check = False
+        for note in notes:
+            if note['id'] == id:
+                check = True
+        return check    
 
     def display_note(note):
         print(f"ID: {note['id']}")
@@ -35,9 +40,12 @@ def note_zero_function():
             try:
                 id = int(input("Введите ID заметки (целое число): "))
             except ValueError:
-                print('Введите целое число')
+                print(start + "\"Введите целое число\"" + end)
             else:
                 break
+        if checkid(notes, id):
+            print(start + "\"Такой ID уже существует\"" + end)
+            return
         title = input("Введите заголовок заметки: ")
         body = input("Введите содержание: ")
         created_at = datetime.datetime.now().strftime("%d-%m-%Y")
@@ -52,9 +60,11 @@ def note_zero_function():
             try:
                 id = int(input("Введите ID заметки для редактирования: "))
             except ValueError:
-                print('Введите целое число')
+                print(start + "\"Введите целое число\"" + end)
             else:
                 break
+        if not checkid(notes, id):
+            print(start + "\"Такого ID не существует\"" + end)
         for note in notes:
             if note['id'] == id:
                 title = input("Введите новый заголовок заметки: ")
@@ -65,17 +75,20 @@ def note_zero_function():
                     "%d-%m-%Y %H:%M:%S")
                 break
 
-
     def delete_note(notes):
-        id = input("Введите ID заметки для удаления: ")
+        while True:
+            try:
+                id = int(input("Введите ID заметки для удаления: "))
+            except ValueError:
+                print(start + "\"Введите целое число\"" + end)
+            else:
+                break
+        if not checkid(notes, id):
+            print(start + "\"Такого ID не существует\"" + end)
         for note in notes:
             if note['id'] == id:
                 notes.remove(note)
                 break
-            else:
-                error_print()
-
-    
 
     def save_notes_to_file(notes):
         with open("./note_files/notes.json", "w") as file:
@@ -85,15 +98,21 @@ def note_zero_function():
     load_notes_from_file()
     notes = load_notes_from_file()
 
-    print(notes)
-
     while True:
         display_menu()
         option = input("Выберите опцию: ")
         if option == "1":
             display_notes(notes)
         elif option == "2":
-            id = input("Введите ID заметки: ")
+            while True:
+                try:
+                    id = int(input("Введите ID заметки: "))
+                except ValueError:
+                    print(start + "\"Введите целое число\"" + end)
+                else:
+                    break
+            if not checkid(notes, id):
+                print(start + "\"Такого ID не существует\"" + end)
             for note in notes:
                 if note['id'] == id:                    
                     display_note(note)                                                                   
